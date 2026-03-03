@@ -1,0 +1,46 @@
+# odev_fast_power.py
+
+def fast_power(base, exp):
+    """
+    base^exp değerini hesaplar.
+    Kural: ** veya pow kullanmak yasak.
+
+    Algoritma Açıklaması (Exponentiation by Squaring):
+    - Üs 0 ise sonuç 1 döner.
+    - Üs tek ise, mevcut taban sonuca çarpılır.
+    - Her adımda tabanın karesi alınır ve üs ikiye bölünerek (tam sayı bölmesi) küçültülür.
+    - Bu işlem üs 0 olana kadar devam eder.
+
+    Zaman Karmaşıklığı: O(log n)
+    - Her döngüde üs (exp) yarıya indirildiği için işlem sayısı logaritmik olarak azalır. 
+    - Klasik O(n) yöntemine (üssü tek tek çarpmaya) göre çok daha az adımda sonuca ulaşır.
+    """
+    
+    if exp == 0:
+        return 1
+
+    result = 1
+    
+    while exp > 0:
+        # Üs tek ise sonuca dahil et
+        if exp % 2 == 1:
+            result = result * base
+        
+        # Tabanın karesini al ve üssü yarıya indir
+        base = base * base
+        exp = exp // 2
+        
+    return result
+
+# --- TEST SENARYOLARI ---
+if __name__ == "__main__":
+    print("Test 1 (exp = 0):", fast_power(5, 0) == 1)
+    print("Test 2 (base = 0):", fast_power(0, 5) == 0)
+    print("Test 3 (exp = 1):", fast_power(7, 1) == 7)
+    print("Test 4 (çift üs):", fast_power(2, 4) == 16)
+    print("Test 5 (tek üs):", fast_power(2, 5) == 32)
+    print("Test 6 (float taban):", round(fast_power(1.5, 2), 2) == 2.25)
+    print("Test 7 (1 tabanı):", fast_power(1, 100) == 1)
+    print("Test 8 (büyük üs):", fast_power(2, 10) == 1024)
+    print("Test 9 (10'un kuvveti):", fast_power(10, 3) == 1000)
+    print("Test 10 (çok büyük sayı):", fast_power(3, 15) == 14348907)
