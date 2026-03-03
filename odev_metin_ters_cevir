@@ -1,0 +1,116 @@
+# odev_metin_ters_cevir.py
+
+# ==========================================
+# Bölüm A - Temel Çözüm
+# ==========================================
+def ters_cevir(metin):
+    ters_metin = ""
+    sayac = 0
+    
+    # Karakterleri baştan sona dolaşıp yeni string'in en başına ekliyoruz 
+    # (Bu sayede mantıken sondan başa doğru dizilmiş oluyorlar)
+    for harf in metin:
+        ters_metin = harf + ters_metin
+        sayac += 1
+        
+    print(f"[Temel Çözüm] İşlenen karakter: {sayac} | Metin uzunluğu: {len(metin)}")
+    return ters_metin
+
+# ==========================================
+# Bölüm B - İndeks Kullanarak Çözüm
+# ==========================================
+def ters_cevir_index(metin):
+    ters_metin = ""
+    sayac = 0
+    
+    # range(başlangıç, bitiş, adım) kullanarak son indeksten sıfıra doğru geliyoruz
+    for i in range(len(metin) - 1, -1, -1):
+        ters_metin += metin[i]
+        sayac += 1
+        
+    print(f"[İndeks Çözüm] İşlenen karakter: {sayac} | Metin uzunluğu: {len(metin)}")
+    return ters_metin
+
+# ==========================================
+# Bölüm C - While Döngüsü ile Çözüm
+# ==========================================
+def ters_cevir_while(metin):
+    ters_metin = ""
+    sayac = 0
+    i = len(metin) - 1
+    
+    while i >= 0:
+        ters_metin += metin[i]
+        sayac += 1
+        i -= 1
+        
+    print(f"[While Çözüm] İşlenen karakter: {sayac} | Metin uzunluğu: {len(metin)}")
+    return ters_metin
+
+
+# ==========================================
+# Bölüm E - Testler (15 Test)
+# ==========================================
+if __name__ == "__main__":
+    print("--- 15 ADET TEST SENARYOSU ---")
+    test_metinleri = [
+        "a",                                    # 1. Tek harf
+        "ab",                                   # 2. İki harf
+        "abc",                                  # 3. Üç harf
+        "12345",                                # 4. Sadece sayılar
+        "Python",                               # 5. İstenen örnek
+        "",                                     # 6. Boş metin
+        " ",                                    # 7. Sadece boşluk
+        "Veri Yapıları",                        # 8. İki kelime
+        "123abc",                               # 9. Sayı ve harf
+        "!!!",                                  # 10. Sadece özel karakter
+        "Bu çok uzun bir cümledir ve test için yazılmıştır.", # 11. Uzun cümle
+        "BÜYÜK HARFLİ METİN",                   # 12. Büyük harfli metin
+        "küçük harfli metin",                   # 13. Küçük harfli metin
+        "A1b2C3d4!!!",                          # 14. Sayı, harf, özel karakter karışık
+        "x" * 100                               # 15. 100 karakterlik metin
+    ]
+
+    for index, test in enumerate(test_metinleri, start=1):
+        print(f"\nTest {index} Girdi: '{test}'")
+        # Farklı yöntemlerin çalıştığını göstermek için fonksiyonları dönüşümlü kullanalım
+        if index % 3 == 1:
+            cikti = ters_cevir(test)
+        elif index % 3 == 2:
+            cikti = ters_cevir_index(test)
+        else:
+            cikti = ters_cevir_while(test)
+            
+        # 100 karakterlik testi ekrana basarken terminali boğmamak için kısa gösterelim
+        if index == 15:
+            print(f"Çıktı (Kısaltılmış): '{cikti[:10]}...{cikti[-10:]}'")
+        else:
+            print(f"Çıktı: '{cikti}'")
+
+    print("\n" + "="*40)
+    
+    # ==========================================
+    # Bölüm F - Kullanıcıdan Girdi Alma
+    # ==========================================
+    print("\n--- KULLANICI GİRİŞİ ---")
+    kullanici_metni = input("Metin giriniz: ")
+    print("Tersi:", ters_cevir(kullanici_metni))
+
+
+"""
+==========================================
+Bölüm G - Zaman Karmaşıklığı Analizi
+==========================================
+
+1. Bu algoritmanın zaman karmaşıklığı nedir?
+Cevap: O(n)'dir. (n: girilen metnin karakter sayısı veya uzunluğu)
+
+2. Neden O(n) dir?
+Cevap: Çünkü metnin içindeki her bir karakter döngü vasıtasıyla tam olarak bir kez ziyaret edilmektedir. İşlem adımı sayısı, girdinin boyutu (n) ile doğru orantılı olarak artar.
+
+3. Bellek karmaşıklığı nedir?
+Cevap: O(n)'dir. Listeler yasak olduğu için yeni bir string değişkeni ("ters_metin") oluşturduk ve her karakteri buraya ekledik. Yeni string'in boyutu da orijinal metinle aynı (n) olduğu için ekstra n kadar bellek alanı kullanılır.
+
+4. Daha hızlı bir yöntem var mıdır?
+Cevap: Zaman karmaşıklığı olarak (n adet karakteri okumak zorunda olduğumuz için) teorik olarak O(n)'den daha hızlısı mümkün değildir. Ancak pratikte çalışma süresini kısaltmak için Python'un C seviyesinde optimize edilmiş kendi araçları (metin[::-1] veya ''.join(reversed(metin))) kullanmak çok daha performanslı çalışacaktır. Stringleri + operatörü ile birleştirmek Python'da her adımda yeni bir string nesnesi oluşturduğu için arka planda yavaşlatıcı bir unsurdur.
+"""
